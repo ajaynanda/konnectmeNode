@@ -13,7 +13,7 @@ const socketIo = require('socket.io');
 const server = http.createServer(app);
 const io = socketIo(server,{
     cors: {
-      origin: ["http://localhost:4200","https://konnectsme.netlify.app"], // Change to your Angular app's URL if different
+      origin: "*", // Change to your Angular app's URL if different
  
       credentials: true // This allows cookies and session data
     },
