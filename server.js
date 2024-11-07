@@ -13,7 +13,7 @@ const socketIo = require('socket.io');
 const server = http.createServer(app);
 const io = socketIo(server,{
     cors: {
-      origin: "http://localhost:4200", // Change to your Angular app's URL if different
+      origin: ["http://localhost:4200","https://konnectsme.netlify.app"], // Change to your Angular app's URL if different
  
       credentials: true // This allows cookies and session data
     },
@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
   });
 app.use(morgan('tiny'))
 app.use(cors({
-  origin: ["http://localhost:4200", "https://konnectmeapi.onrender.com","http://konnectsme.s3-website-us-east-1.amazonaws.com"],
+  origin: ["http://localhost:4200", "https://konnectmeapi.onrender.com","https://konnectsme.netlify.app"],
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization"
