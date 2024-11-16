@@ -6,8 +6,6 @@ const userpost=((req,res)=>{
     return new Promise((resolve,reject)=>{
                 Userdb.findOne({userid:req.params.id}).then((userdata)=>{
                     // console.log(userdata);
-                    console.log(req.body,"iuh");
-                    
                     upload(req, res, (err) => {
                         if (err) reject(err)
                         if (!req.files.img && !req.body.desc) {
@@ -20,6 +18,7 @@ const userpost=((req,res)=>{
                                     Description:req.body.desc,
                                     Image:req.files.img?req.files.img[0].filename:'',
                                     profileImg:userdata.Profilepic,
+                                    url:req.body.url
                                 })
                                 post.save(post).then((result)=>{
                                     resolve(result)

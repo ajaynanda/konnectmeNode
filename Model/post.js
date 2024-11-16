@@ -29,6 +29,9 @@ const PostSchema=new mongoose.Schema({
     profileImg:{
         type:String
     },
+    url:{
+        type:String
+    },
     Comments:[{
         userid:{
             type:String
