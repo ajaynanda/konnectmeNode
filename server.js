@@ -1,6 +1,7 @@
 const express=require('express')
 const app=express()
 const http = require('http');
+const hbs = require('hbs');
 const  cors=require('cors')
 const bodyParser = require("body-parser")
 const connectdb=require('./ConnectionDB/db')
@@ -10,6 +11,7 @@ const route=require('./Routes/post')
 const routes=require('./Routes/admin')
 const session = require('express-session')
 const socketIo = require('socket.io');
+const path = require('path');
 const server = http.createServer(app);
 const io = socketIo(server,{
     cors: {
@@ -37,6 +39,8 @@ io.on('connection', (socket) => {
         
     })
   });
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(morgan('tiny'))
 app.use(cors({
   origin: ["http://localhost:4200","http://localhost:5000", "https://konnectmeapi.onrender.com","https://konnectsme.netlify.app"],

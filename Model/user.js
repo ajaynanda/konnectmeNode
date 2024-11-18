@@ -81,7 +81,13 @@ const UserSchema=new mongoose.Schema({
         repID:String,
         repName:String,
         repProfilePic:String
-    }]
+    }],
+    verified: {
+         type: Boolean, default: false 
+        },
+    verificationToken: { 
+        type: String 
+    },
 },{timestamps:true})
 const Userdb=mongoose.model('user',UserSchema)
 module.exports = Userdb

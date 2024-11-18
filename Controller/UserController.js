@@ -40,10 +40,49 @@ const userRegister = ((req, res) => {
                     
                         resolve(result)
                     })
+                   await Emailsend.AccountVerification(req)
                 }).catch(err => {
                     reject(err)
                 })
             }
+        })
+    })
+})
+const emailVerified=((req,res)=>{
+    return new Promise((resolve,reject)=>{
+        try{
+        const token = req.query.token
+        console.log(token,"j");
+        
+        Userdb.findOne({verificationToken:token}).then((user)=>{
+            console.log(user);        
+            if(user && user!=null){
+                if(user.verified){
+                    resolve('Email Already Verified.Login to your account')
+                }else{
+                    user.verified=true
+                    // user.verificationToken=''
+                    user.save()
+                    resolve('Email is Verified.You can Login in')
+                }           
+            }else{
+                reject('Link Expires or Cannot find the user.Try Again')
+            }
+        })
+    }catch(err){
+        console.log(err)
+        reject(err)   
+    }
+    })
+})
+const sendEmailToVerify=((req,res)=>{
+    return new Promise(async(resolve,reject)=>{
+        console.log(req.body,"j");
+        
+        await Emailsend.AccountVerification(req).then((res)=>{
+            resolve(res)
+        }).catch((err)=>{
+            reject(err)
         })
     })
 })
@@ -57,7 +96,7 @@ const userLogin=((req, res) => {
             if (!user) {
                 return reject({ Error: true, Message: "Email incorrect" })
             }
-            if (user) {
+            if (user.verified) {
                 const password = user.Password
                 bcrypt.compare(req.body.password, password).then((users) => {
                     console.log(users);
@@ -78,11 +117,13 @@ const userLogin=((req, res) => {
                             sameSite: 'lax'
                         })
                         req.token = token
-                        return resolve(user)
+                        return resolve({user:user,emailverify:true})
                     }
                 }).catch((err) => {
                     return reject(err);
                 })
+            }else{
+                resolve({message:'Your Email Account is not Verified',emailverify:false,user:user})
             }
         })
     })
@@ -487,4 +528,4 @@ const messageChatHistory=((req,res)=>{
        
     })
 })
-module.exports = { Alluser, userRegister,userLogin,getuserbyid,updateUserById,verifytoken,Deleteuser,ChangePassword,userLogout,otpverification,forgotPassword,otpsend,userfollow,userunfollow,removeFollower,addNewChat,chatList,sendMessage,messageChatHistory}
+module.exports = { Alluser, userRegister,userLogin,getuserbyid,updateUserById,verifytoken,Deleteuser,ChangePassword,userLogout,otpverification,forgotPassword,otpsend,userfollow,userunfollow,removeFollower,addNewChat,chatList,sendMessage,messageChatHistory,emailVerified,sendEmailToVerify}

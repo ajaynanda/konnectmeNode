@@ -18,6 +18,28 @@ router.post('/userregister',((req,res)=>{
         res.status(400).json(err)
     })
 }))
+router.get('/verifyemail',((req,res)=>{
+    Controller.emailVerified(req,res).then((result)=>{
+        // res.status(200).send({Success:true,message:result})
+        res.status(200).render('emailverifiedbrowser', {
+            title: 'Konnectme',
+            message: result,
+        });
+    }).catch((err)=>{
+        // res.status(400).json({Success:false,err:err})
+        res.status(400).render('emailverifiedbrowser', {
+            title: 'Konnectme',
+            message: err,
+        });
+    })
+}))
+router.post('/sendemailtoverify',upload.none(),(req,res)=>{
+    Controller.sendEmailToVerify(req,res).then((result)=>{
+        res.status(200).json({Success:true,message:result})
+    }).catch((err)=>{
+        res.status(400).json(err)
+    })
+})
 router.post('/userlogin',((req,res)=>{
     Controller.userLogin(req,res).then((result)=>{
         res.status(200).json({
