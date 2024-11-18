@@ -123,7 +123,7 @@ const userLogin=((req, res) => {
                     return reject(err);
                 })
             }else{
-                resolve({message:'Your Email Account is not Verified',emailverify:false,user:user})
+                resolve({Success:false,message:'Your Email Account is not Verified',emailverify:false,user:user})
             }
         })
     })

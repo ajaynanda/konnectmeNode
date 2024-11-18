@@ -60,7 +60,8 @@ const AccountVerification = (async(req,res)=>{
     const token = generateToken(); // Generate the token
     console.log(token,"ej");
     
-    const verificationLink = `http://localhost:5000/verifyemail?token=${token}`;
+    // const verificationLink = `http://localhost:5000/verifyemail?token=${token}`; 
+    const verificationLink = `https://konnectmeapi.onrender.com/verifyemail?token=${token}`;
   const User=await Userdb.updateOne({Email:req.body.email},{verificationToken:token,verified:false})
   console.log(User,"ijh");  
     const transporter = nodemailer.createTransport({
