@@ -72,6 +72,9 @@ const AccountVerification = (async(req,res)=>{
           user: process.env.Email,
           pass:process.env.Password,
         },
+        tls: {
+          rejectUnauthorized: false, // Prevent self-signed certificate issues
+        },
       });
       const hbsoptions = {
         viewEngine:{
