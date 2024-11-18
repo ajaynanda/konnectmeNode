@@ -297,7 +297,7 @@ const otpsend=((req,res)=>{
             else{
                 const otp=Math.floor(Math.random()*90000) + 100000;
                 console.log(otp,"otp send user ");
-                Emailsend(req,otp)
+                Emailsend.Emailsends(req,otp)
                 const data=new otpdb({
                     userid:user.userid,
                     otp:otp,

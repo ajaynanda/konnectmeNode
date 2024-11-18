@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer')
 const hbs = require("nodemailer-express-handlebars")
 const path = require("path");
 const Userdb = require('../Model/user');
-const Emailsend = (async(req,passwordgen)=>{
+const Emailsends = (async(req,passwordgen)=>{
   console.log(passwordgen);
   try{
 
@@ -61,7 +61,7 @@ const AccountVerification = (async(req,res)=>{
     console.log(token,"ej");
     
     // const verificationLink = `http://localhost:5000/verifyemail?token=${token}`; 
-    const verificationLink = `https://konnectmeapi.onrender.com/verifyemail?token=${token}`;
+    const verificationLink = `https://konnectsmeapi.onrender.com/verifyemail?token=${token}`;
   const User=await Userdb.updateOne({Email:req.body.email},{verificationToken:token,verified:false})
   console.log(User,"ijh");  
     const transporter = nodemailer.createTransport({
@@ -110,4 +110,4 @@ const AccountVerification = (async(req,res)=>{
       console.log(error,"error in mail")
     }
 })
- module.exports = {Emailsend,AccountVerification}
+ module.exports = {Emailsends,AccountVerification}

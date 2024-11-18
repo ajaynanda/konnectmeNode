@@ -43,7 +43,7 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(morgan('tiny'))
 app.use(cors({
-  origin: ["http://localhost:4200","http://localhost:5000", "https://konnectmeapi.onrender.com","https://konnectsme.netlify.app"],
+  origin: ["http://localhost:4200","http://localhost:5000", "https://konnectsmeapi.onrender.com","https://konnectsme.netlify.app"],
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization"
