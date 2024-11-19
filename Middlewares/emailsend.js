@@ -71,7 +71,7 @@ const AccountVerification = (async(req,res)=>{
           pass:process.env.Password,
         },
       });
-      console.log(process.env.Email,process.env.password,"cref4")
+      console.log(transporter,"cref4")
       const hbsoptions = {
         viewEngine:{
             extName:'.handlebars',
@@ -81,9 +81,9 @@ const AccountVerification = (async(req,res)=>{
         viewPath:path.resolve('./views'),
         extName:'.hbs'
     }
-    console.log(process.env.Email,process.env.password,"cref5")
+    console.log(hbsoptions,"cref5")
       transporter.use('compile',hbs(hbsoptions))
-      console.log(process.env.Email,process.env.password,"cref3")
+  
     const options = {
         from:process.env.Email, // sender address
         to: req.body.email, // list of receivers
@@ -98,7 +98,7 @@ const AccountVerification = (async(req,res)=>{
 
         },
     }
-    console.log(process.env.Email,process.env.password,"cref6")
+    console.log(options,"cref6")
      const mailresponse =   transporter.sendMail(options);
      console.log(mailresponse,"res");
      
