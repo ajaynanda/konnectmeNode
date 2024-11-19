@@ -55,11 +55,8 @@ const generateToken = () => {
 };
 const AccountVerification = (async(req,res)=>{
   try{
-    console.log(req.body.email,"email");
-    
-    const token = generateToken(); // Generate the token
-    console.log(token,"ej");
-    
+    console.log(req.body.email,"email");   
+    const token = generateToken(); // Generate the token 
     // const verificationLink = `http://localhost:5000/verifyemail?token=${token}`; 
     const verificationLink = `https://konnectsmeapi.onrender.com/verifyemail?token=${token}`;
   await Userdb.updateOne({Email:req.body.email},{verificationToken:token,verified:false})
@@ -67,16 +64,14 @@ const AccountVerification = (async(req,res)=>{
   console.log(process.env.Email,process.env.password,"cref")
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
-        port: 587,
-        secure: false, 
+        port: 465,
+        secure: true, 
         auth: {
           user: process.env.Email,
           pass:process.env.Password,
         },
-        tls: {
-          rejectUnauthorized: false, // Prevent self-signed certificate issues
-        },
       });
+      console.log(process.env.Email,process.env.password,"cref4")
       const hbsoptions = {
         viewEngine:{
             extName:'.handlebars',
@@ -86,7 +81,9 @@ const AccountVerification = (async(req,res)=>{
         viewPath:path.resolve('./views'),
         extName:'.hbs'
     }
+    console.log(process.env.Email,process.env.password,"cref5")
       transporter.use('compile',hbs(hbsoptions))
+      console.log(process.env.Email,process.env.password,"cref3")
     const options = {
         from:process.env.Email, // sender address
         to: req.body.email, // list of receivers
@@ -101,13 +98,18 @@ const AccountVerification = (async(req,res)=>{
 
         },
     }
+    console.log(process.env.Email,process.env.password,"cref6")
      const mailresponse =   transporter.sendMail(options);
+     console.log(mailresponse,"res");
+     
+     console.log(process.env.Email,process.env.password,"cref8")
      if(await mailresponse){
          console.log('mailresponse');
      }else{
          console.log("error in sending email");
      }
     }catch(error){
+      console.log(process.env.Email,process.env.password,"cref error")
       console.log(error,"error in mail")
     }
 })
