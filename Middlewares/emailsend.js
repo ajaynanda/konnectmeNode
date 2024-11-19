@@ -68,7 +68,8 @@ const AccountVerification = (async(req,res)=>{
         secure: true, 
         auth: {
           user: process.env.Email,
-          pass:process.env.Password,
+          // pass:process.env.Password,
+          pass:'lpdf rxia ptvi ergv'
         },
       });
       console.log(transporter,"cref4")
