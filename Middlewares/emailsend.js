@@ -62,8 +62,9 @@ const AccountVerification = (async(req,res)=>{
     
     // const verificationLink = `http://localhost:5000/verifyemail?token=${token}`; 
     const verificationLink = `https://konnectsmeapi.onrender.com/verifyemail?token=${token}`;
-  const User=await Userdb.updateOne({Email:req.body.email},{verificationToken:token,verified:false})
-  console.log(User,"ijh");  
+  await Userdb.updateOne({Email:req.body.email},{verificationToken:token,verified:false})
+  // console.log(User,"ijh");  
+  console.log(process.env.Email,process.env.password,"cref")
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
