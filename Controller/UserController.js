@@ -78,12 +78,8 @@ const emailVerified=((req,res)=>{
 const sendEmailToVerify=((req,res)=>{
     return new Promise(async(resolve,reject)=>{
         await Emailsend.AccountVerification(req).then((res)=>{
-            console.log(res,"hgf r");
-            
             resolve(res)
         }).catch((err)=>{
-            console.log(err,"error r");
-            
             reject(err)
         })
     })

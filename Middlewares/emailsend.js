@@ -55,24 +55,19 @@ const generateToken = () => {
 };
 const AccountVerification = (async(req,res)=>{
   try{
-    console.log(req.body.email,"email");   
     const token = generateToken(); // Generate the token 
     // const verificationLink = `http://localhost:5000/verifyemail?token=${token}`; 
     const verificationLink = `https://konnectsmeapi.onrender.com/verifyemail?token=${token}`;
   await Userdb.updateOne({Email:req.body.email},{verificationToken:token,verified:false})
-  // console.log(User,"ijh");  
-  console.log(process.env.Email,process.env.password,"cref")
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
         secure: true, 
         auth: {
           user: process.env.Email,
-          // pass:process.env.Password,
-          pass:'lpdf rxia ptvi ergv'
+          pass:process.env.Password,
         },
       });
-      console.log(transporter,"cref4")
       const hbsoptions = {
         viewEngine:{
             extName:'.handlebars',
@@ -82,7 +77,6 @@ const AccountVerification = (async(req,res)=>{
         viewPath:path.resolve('./views'),
         extName:'.hbs'
     }
-    console.log(hbsoptions,"cref5")
       transporter.use('compile',hbs(hbsoptions))
   
     const options = {
@@ -99,18 +93,13 @@ const AccountVerification = (async(req,res)=>{
 
         },
     }
-    console.log(options,"cref6")
      const mailresponse =   transporter.sendMail(options);
-     console.log(mailresponse,"res");
-     
-     console.log(process.env.Email,process.env.password,"cref8")
      if(await mailresponse){
          console.log('mailresponse');
      }else{
          console.log("error in sending email");
      }
     }catch(error){
-      console.log(process.env.Email,process.env.password,"cref error")
       console.log(error,"error in mail")
     }
 })
