@@ -66,6 +66,22 @@ router.get('/userbyid/:id',((req,res)=>{
         res.status(400).json(err)
     })
 }))
+router.post('/savepost/:userid/:postid',((req,res)=>{
+    Controller.savePost(req,res).then((result)=>{
+        res.status(200).json(result)
+    }).catch(err=>{
+        console.log(err)
+        res.status(400).json(err)
+    })
+}))
+router.delete('/unsavepost/:userid/:postid',((req,res)=>{
+    Controller.unsavePost(req,res).then((result)=>{
+        res.status(200).json(result)
+    }).catch(err=>{
+        console.log(err)
+        res.status(400).json(err)
+    })
+}))
 router.put('/updateuserbyid/:id',((req,res)=>{
   
     Controller.updateUserById(req,res).then((result)=>{

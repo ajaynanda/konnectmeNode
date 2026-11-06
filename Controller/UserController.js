@@ -1,4 +1,5 @@
 const Userdb = require('../Model/user')
+const Postdb = require('../Model/post')
 const bcrypt = require('bcrypt')
 const jwt =require('jsonwebtoken')
 const otpdb=require('../Model/otp')
@@ -134,7 +135,7 @@ const getuserbyid=((req, res) => {
         const currentUser = await Userdb.findById(req.params.id).populate('Friends Followers Followings');
         Userdb.findById(id).then(async(user) => {
             const commonFriends =await user.Followers.filter(follower =>
-                user.Followings.some(following => following._id === follower._id))
+                user.Followings.some(following => String(following._id) === String(follower._id)))
                 .map(follower => ({
                 Firstname: follower.Firstname,
                 Lastname: follower.Lastname,
@@ -145,15 +146,10 @@ const getuserbyid=((req, res) => {
             }));
             console.log(commonFriends,"cf");
             
-            // Step 3: Add new common friends and remove those not in the common list
-            if(commonFriends.length>0){    
-                // await Userdb.findByIdAndUpdate(req.params.id, {
-                //     $addToSet: { Friends: { $each: commonFriends } }
-                // });
-                await Userdb.findByIdAndUpdate(req.params.id, {
-                    Friends: commonFriends
-                });
-            }
+            await Userdb.findByIdAndUpdate(req.params.id, {
+                Friends: commonFriends
+            });
+            user.Friends = commonFriends;
             const suggestionArray = await allUsers.filter(user => {
                 return (
                     String(user._id) !== String(req.params.id) && // Exclude the current user
@@ -196,6 +192,43 @@ const getuserbyid=((req, res) => {
         }).catch((err) => {
             return reject({ Error: true, Message: "User not found with the id " + id,err:err })
         })
+    })
+})
+const savePost=((req,res)=>{
+    return new Promise(async(resolve,reject)=>{
+        try{
+            const [user,post]=await Promise.all([
+                Userdb.findOne({userid:req.params.userid}),
+                Postdb.findById(req.params.postid)
+            ])
+            if(!user || !post){
+                return reject({Success:false,message:'User or post not found'})
+            }
+            await Userdb.updateOne(
+                {_id:user._id},
+                {$addToSet:{SavedPosts:post._id}}
+            )
+            resolve({Success:true,message:'Post saved'})
+        }catch(error){
+            reject({Success:false,message:'Unable to save post',error})
+        }
+    })
+})
+const unsavePost=((req,res)=>{
+    return new Promise(async(resolve,reject)=>{
+        try{
+            const user=await Userdb.findOne({userid:req.params.userid})
+            if(!user){
+                return reject({Success:false,message:'User not found'})
+            }
+            await Userdb.updateOne(
+                {_id:user._id},
+                {$pull:{SavedPosts:req.params.postid}}
+            )
+            resolve({Success:true,message:'Post removed from saved items'})
+        }catch(error){
+            reject({Success:false,message:'Unable to remove saved post',error})
+        }
     })
 })
 const updateUserById = ((req, res) => {
@@ -526,4 +559,4 @@ const messageChatHistory=((req,res)=>{
        
     })
 })
-module.exports = { Alluser, userRegister,userLogin,getuserbyid,updateUserById,verifytoken,Deleteuser,ChangePassword,userLogout,otpverification,forgotPassword,otpsend,userfollow,userunfollow,removeFollower,addNewChat,chatList,sendMessage,messageChatHistory,emailVerified,sendEmailToVerify}
+module.exports = { Alluser, userRegister,userLogin,getuserbyid,updateUserById,verifytoken,Deleteuser,ChangePassword,userLogout,otpverification,forgotPassword,otpsend,userfollow,userunfollow,removeFollower,addNewChat,chatList,sendMessage,messageChatHistory,emailVerified,sendEmailToVerify,savePost,unsavePost}

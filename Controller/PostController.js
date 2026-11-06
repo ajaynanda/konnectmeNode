@@ -107,6 +107,16 @@ const likepost=((req,res)=>{
         }     
     })
 })
+const likedposts=((req,res)=>{
+    return postdb.find({'Likes.userid':req.params.userid}).sort({createdAt:-1})
+})
+const savedposts=(async(req,res)=>{
+    const user=await Userdb.findOne({userid:req.params.userid}).populate('SavedPosts')
+    if(!user){
+        throw new Error('User not found')
+    }
+    return user.SavedPosts || []
+})
 const comment=((req,res)=>{
     return new Promise(async(resolve,reject)=>{
         const user=await Userdb.findById(req.params.userid)
@@ -201,4 +211,4 @@ const deleteReplyComment=((req,res)=>{
         resolve(result)
     })
 })
-module.exports={userpost,postbyid,deletepost,updatepost,timeline,likepost,comment,deleteComment,editComment,addReply,editReplyComment,deleteReplyComment}
+module.exports={userpost,postbyid,deletepost,updatepost,timeline,likepost,likedposts,savedposts,comment,deleteComment,editComment,addReply,editReplyComment,deleteReplyComment}

@@ -52,6 +52,22 @@ route.get('/like/:userid/:id',((req,res)=>{
         res.status(400).json(err)
     })
 }))
+route.get('/likedposts/:userid',((req,res)=>{
+    Controller.likedposts(req,res).then((result)=>{
+        res.status(200).json({Success:true,data:result})
+    }).catch(err=>{
+        console.log(err)
+        res.status(400).json({Success:false,message:'Unable to load liked posts',error:err})
+    })
+}))
+route.get('/savedposts/:userid',((req,res)=>{
+    Controller.savedposts(req,res).then((result)=>{
+        res.status(200).json({Success:true,data:result})
+    }).catch(err=>{
+        console.log(err)
+        res.status(400).json({Success:false,message:'Unable to load saved posts',error:err})
+    })
+}))
 route.post('/comment/:userid/:id',((req,res)=>{
     Controller.comment(req,res).then((result)=>{
         res.status(200).json({Success:true,message:"You commment on the post",data:result})
