@@ -44,6 +44,10 @@ const UserSchema=new mongoose.Schema({
         Profilepic:String,
         dob:String
     }],
+    SavedPosts:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'post'
+    }],
     Aboutme:{
         type:String,
         default:undefined
